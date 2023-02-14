@@ -12,7 +12,7 @@ interface CoinPriceInfoDao {
 
     // ORDER BY lastUpdate - сортировка по последней дате обновления
     // Этот метод нам понадобиться, чтобы выводить список в RecyclerView
-    @Query("SELECT * FROM full_price_list ORDER BY lastUpdate")
+    @Query("SELECT * FROM full_price_list ORDER BY lastUpdate DESC")
     fun getPriceList() : LiveData<List<CoinPriceInfo>>
 
     @Query("SELECT * FROM full_price_list WHERE fromSymbol == :fSym LIMIT 1")
