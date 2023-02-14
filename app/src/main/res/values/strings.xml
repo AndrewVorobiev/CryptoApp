@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CryptoApp</string>
+    <string name="last_update">Время последнего обновления: %s</string>
 </resources>
