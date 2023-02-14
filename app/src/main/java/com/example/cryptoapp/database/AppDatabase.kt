@@ -6,28 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cryptoapp.pojo.CoinPriceInfo
 
-// Так как базу данных за нас реализует библиотека Room, мы делаем класс abstract
 @Database(entities = [CoinPriceInfo::class], version = 1, exportSchema = false)
-abstract class AppDatabase: RoomDatabase() {
-    // Внутри класса создаем Singleton
-    companion object{
-        private const val DB_NAME = "main_db"
+abstract class AppDatabase : RoomDatabase() {
+    companion object {
+
+        private var db: AppDatabase? = null
+        private const val DB_NAME = "main.db"
         private val LOCK = Any()
-        private var db : AppDatabase? = null
 
-        fun getInstance(context: Context): AppDatabase{
-            // Этот метод должен быть синхронизирован
-            synchronized(LOCK){
-
-                // Оператор let - код блока выполнится только в том случае, если не равно null
+        fun getInstance(context: Context): AppDatabase {
+            synchronized(LOCK) {
                 db?.let { return it }
-
-                // переменная db - нуллабельная поэтому создаем отдельную переменную
-                val instance = Room.databaseBuilder(
-                    context,
-                    AppDatabase::class.java,
-                    DB_NAME
-                ).build()
+                val instance =
+                    Room.databaseBuilder(
+                        context,
+                        AppDatabase::class.java,
+                        DB_NAME
+                    ).build()
                 db = instance
                 return instance
             }
@@ -35,5 +30,4 @@ abstract class AppDatabase: RoomDatabase() {
     }
 
     abstract fun coinPriceInfoDao(): CoinPriceInfoDao
-
 }

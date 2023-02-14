@@ -11,25 +11,23 @@ import com.example.cryptoapp.pojo.CoinPriceInfoRawData
 import com.google.gson.Gson
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 
-class CoinViewModel(application: Application): AndroidViewModel(application) {
+class CoinViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val compositeDisposable = CompositeDisposable()
     private val db = AppDatabase.getInstance(application)
+    private val compositeDisposable = CompositeDisposable()
 
     val priceList = db.coinPriceInfoDao().getPriceList()
-
-    // В Котлин, можно сделать инициализацию метода внтруи ViewModel
-    init {
-        loadData()
-    }
 
     fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
         return db.coinPriceInfoDao().getPriceInfoAboutCoin(fSym)
     }
 
-
+    init {
+        loadData()
+    }
 
     private fun loadData(){
         // сначала по Get запросу мы получаем Полный список
@@ -56,9 +54,9 @@ class CoinViewModel(application: Application): AndroidViewModel(application) {
         compositeDisposable.add(disposable)
     }
 
-
-    private fun getPriceListFromRawData(coinPriceInfoRawData: CoinPriceInfoRawData)
-            : List<CoinPriceInfo> {
+    private fun getPriceListFromRawData(
+        coinPriceInfoRawData: CoinPriceInfoRawData
+    ): List<CoinPriceInfo> {
         val result = ArrayList<CoinPriceInfo>()
         val jsonObject = coinPriceInfoRawData.coinPriceInfoJsonObject ?: return result
         // Чтобы у Json-объекта получить набор ключей, то используется метод keySet()
