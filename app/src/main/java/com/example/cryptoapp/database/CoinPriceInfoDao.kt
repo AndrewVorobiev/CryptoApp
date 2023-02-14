@@ -9,9 +9,13 @@ import com.example.cryptoapp.pojo.CoinPriceInfo
 
 @Dao
 interface CoinPriceInfoDao {
+
+    // ORDER BY lastUpdate - сортировка по последней дате обновления
+    // Этот метод нам понадобиться, чтобы выводить список в RecyclerView
     @Query("SELECT * FROM full_price_list ORDER BY lastUpdate DESC")
     fun getPriceList(): LiveData<List<CoinPriceInfo>>
 
+    // OnConflictStrategy.REPLACE - Когда будут приходить новые данные, они будут заменяться
     @Query("SELECT * FROM full_price_list WHERE fromSymbol == :fSym LIMIT 1")
     fun getPriceInfoAboutCoin(fSym: String): LiveData<CoinPriceInfo>
 

@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.cryptoapp.pojo.CoinPriceInfo
 
 @Database(entities = [CoinPriceInfo::class], version = 1, exportSchema = false)
+// Так как базу данных за нас реализует библиотека Room, мы делаем класс abstract
 abstract class AppDatabase : RoomDatabase() {
     companion object {
 
@@ -15,8 +16,11 @@ abstract class AppDatabase : RoomDatabase() {
         private val LOCK = Any()
 
         fun getInstance(context: Context): AppDatabase {
+            // Этот метод должен быть синхронизирован
             synchronized(LOCK) {
+                // Оператор let - код блока выполнится только в том случае, если не равно null
                 db?.let { return it }
+                // переменная db - нуллабельная поэтому создаем отдельную переменную
                 val instance =
                     Room.databaseBuilder(
                         context,

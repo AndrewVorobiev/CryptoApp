@@ -6,6 +6,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiFactory {
 
+    // В Kotlin нет необходимости реализовывать Singlton,
+    // то есть чтобы Retrofit был один на весь проект.
+    // Так как класс Object его реализует
+
+
     private const val BASE_URL = "https://min-api.cryptocompare.com/data/"
     const val BASE_IMAGE_URL = "https://cryptocompare.com"
 
